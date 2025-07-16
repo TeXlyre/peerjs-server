@@ -7,6 +7,9 @@ HOST_DOMAIN=peerjs.emaily.re
 # Cloudflare Tunnel Configuration
 CLOUDFLARE_API_KEY=your_cloudflare_api_key
 
+# Skip Tests in Docker build
+# SKIP_TESTS=true
+
 # PeerJS Configuration
 PEERJS_PORT=9000
 PEERJS_PATH=/myapp

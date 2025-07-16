@@ -1,6 +1,9 @@
 services:
   peerjs:
-    image: peerjs/peerjs-server:latest
+    build:
+      context: .
+      args:
+        SKIP_TESTS: ${SKIP_TESTS:-false}
     ports:
       - 0.0.0.0:9000:9000
     environment:
