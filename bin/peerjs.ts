@@ -93,16 +93,22 @@ const opts = y
 	.parseSync();
 
 if (!opts.port) {
-	// .port is only not set if the PORT env var is set
-	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	opts.port = parseInt(process.env["PORT"]!);
 }
 
+// Fix CORS configuration
+let corsOptions: CorsOptions = { origin: true }; // Default to allow all
+
 if (opts.cors) {
-	opts["corsOptions"] = {
-		origin: opts.cors,
-	} satisfies CorsOptions;
+	if (opts.cors.includes('*')) {
+		corsOptions = { origin: true };
+	} else {
+		corsOptions = { origin: opts.cors };
+	}
 }
+
+// Add corsOptions to the main configuration
+opts["corsOptions"] = corsOptions;
 
 process.on("uncaughtException", function (e) {
 	console.error("Error: " + e.toString());
@@ -124,6 +130,8 @@ if (opts.sslkey ?? opts.sslcert) {
 }
 
 const userPath = opts.path;
+
+console.log("CORS configuration:", corsOptions);
 
 const server = PeerServer(opts, (server) => {
 	const { address: host, port } = server.address() as AddressInfo;
