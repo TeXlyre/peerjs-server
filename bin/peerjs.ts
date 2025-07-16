@@ -93,10 +93,10 @@ const opts = y
 	.parseSync();
 
 if (!opts.port) {
-	opts.port = parseInt(process.env["PORT"]!);
+	// .port is only not set if the PORT env var is set
+	opts.port = parseInt(process.env["PORT"] ?? "9000");
 }
 
-// Fix CORS configuration
 let corsOptions: CorsOptions = { origin: true }; // Default to allow all
 
 if (opts.cors) {
